@@ -26,7 +26,24 @@
 </head>
 
 <body id="page-top">
+<?php
 
+$dbhost = "localhost";
+$dbuser = "root";
+$dbpass = "";
+$dbname = "agenda";
+//create connection
+$conn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+//check connection
+if (!$conn){
+    die("Conexion failed: " . mysqli_connect_error());
+}
+$fg= $_GET['fg'];
+$sql=mysqli_query($conn,"SELECT * FROM usuario WHERE id = '".$fg."'");
+$fila = mysqli_fetch_array($sql);
+
+$consulta = mysqli_query($conn,"SELECT * FROM contacto WHERE fk_usuario ='".$fg."'");
+?>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -48,7 +65,7 @@
             <li class="nav-item">
 
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="index.php?fg=<?php echo $fg; ?>">
                     <i class="fas fa-fw fa-table"></i>
                     <span>sistema</span></a>
             </li>
@@ -64,7 +81,7 @@
 
             <!-- Nav Item - Tables -->
             <li class="nav-item active">
-                <a class="nav-link" href="nregistro.html">
+                <a class="nav-link" href="nregistro.php?fg=<?php echo $fg; ?>">
                     <i class="fas fa-fw fa-table"></i>
                     <span>registrar</span></a>
             </li>
@@ -106,7 +123,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">GOLDEN_FREEZER</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $fila['usuario']; ?></span>
                                 <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
@@ -134,30 +151,24 @@
                         <div class="text-center">
                             <h1 class="h4 text-gray-900 mb-4">registrar nuevo producto</h1>
                         </div>
-                        <form class="user">
+                        <form class="user" action="nregistro.php?fg=<?php echo $fg; ?>">
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <input type="text" class="form-control form-control-user" id="exampleName"
+                                    <input type="text" name="nombre" class="form-control form-control-user" id="exampleName"
                                         placeholder="nombre">
                                 </div>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control form-control-user" id="exampleName"
+                                    <input type="text" name="marca" class="form-control form-control-user" id="exampleName"
                                         placeholder="marca">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <input type="text" class="form-control form-control-user" id="exampleInputprecio"
+                                    <input type="text"  name="precio" class="form-control form-control-user" id="exampleInputprecio"
                                         placeholder="precio">
                                 </div>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control form-control-user" id="exampleInputcantidad"
-                                        placeholder="cantidad">
-                                </div>
                             </div>
-                            <a href="index.html" class="btn btn-primary btn-user btn-block">
-                                registrar
-                            </a>
+                            <button type="submit" class="btn btn-primary btn-user btn-block">registrar</button>
                         </form>
                         <hr>
                     </div>

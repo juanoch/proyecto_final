@@ -26,7 +26,24 @@
 </head>
 
 <body id="page-top">
+<?php
 
+$dbhost = "localhost";
+$dbuser = "root";
+$dbpass = "";
+$dbname = "agenda";
+//create connection
+$conn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+//check connection
+if (!$conn){
+    die("Conexion failed: " . mysqli_connect_error());
+}
+$fg= $_GET['fg'];
+$sql=mysqli_query($conn,"SELECT * FROM usuario WHERE id = '".$fg."'");
+$fila = mysqli_fetch_array($sql);
+
+$consulta = mysqli_query($conn,"SELECT * FROM contacto WHERE fk_usuario ='".$fg."'");
+?>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -48,7 +65,7 @@
             <li class="nav-item">
 
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="index.php?fg=<?php echo $fg; ?>">
                     <i class="fas fa-fw fa-table"></i>
                     <span>sistema</span></a>
             </li>
@@ -64,7 +81,7 @@
 
             <!-- Nav Item - Tables -->
             <li class="nav-item active">
-                <a class="nav-link" href="nregistro.html">
+                <a class="nav-link" href="nregistro.php?fg=<?php echo $fg; ?>">
                     <i class="fas fa-fw fa-table"></i>
                     <span>registrar</span></a>
             </li>
@@ -106,7 +123,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">GOLDEN_FREEZER</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $fila['usuario']; ?></span>
                                 <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
@@ -141,24 +158,36 @@
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>Nombre</th>
+                                            <th>id</th>
+                                            <th>nombre</th>
                                             <th>marca</th>
                                             <th>precio</th>
-                                            <th>cantidad</th>
                                             <th>opciones</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <th>Nombre</th>
+                                            <th>id</th>
+                                            <th>nombre</th>
                                             <th>marca</th>
                                             <th>precio</th>
-                                            <th>cantidad</th>
                                             <th>opciones</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
+                                        <?php
+                                        while($re = mysqli_fetch_array($consulta)){
+                                            echo "<tr>";
+                                            echo "<td>". $re["id"]."</td>";
+                                            echo "<td>". $re["nombre"]."</td>";
+                                            echo "<td>". $re["marca"]."</td>";
+                                            echo "<td>". $re["precio"]."</td>";
+                                            echo "<td> opciones </td>";
+                                            echo "</tr>";
+                                        }
+                                        ?>
                                         <tr>
+                                            <td>2</td>
                                             <td>computadora</td>
                                             <td>lenovo</td>
                                             <td>6000</td>
